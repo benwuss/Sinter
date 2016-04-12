@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">  
+  <appenders>  
+  
+    <Console name="Console" target="SYSTEM_OUT">  
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %logger{36} %L %M - %msg%n"/>  
+    </Console>  
+    
+    <RollingFile name="Service" fileName="C:/sinterLogs/service.log"    
+                 filePattern="C:/sinterlogs/$${date:yyyy-MM}/Control-%d{MM-dd-yyyy}-%i.log.gz">    
+      <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss.SSS} [%t] %logger{36} %L %M - %msg%n"/>    
+      <SizeBasedTriggeringPolicy size="5 MB" />    
+    </RollingFile> 
+    
+    <RollingFile name="DBLog" fileName="C:/sinterLogs/db.log"    
+                 filePattern="C:/sinterlogs/$${date:yyyy-MM}/db-%d{MM-dd-yyyy}-%i.log.gz">    
+      <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss.SSS} - %msg%n"/>    
+      <SizeBasedTriggeringPolicy size="5 MB" />    
+    </RollingFile> 
+    
+    <RollingFile name="PLCLog" fileName="C:/sinterLogs/plc.log"    
+                 filePattern="C:/sinterlogs/$${date:yyyy-MM}/plc-%d{MM-dd-yyyy}-%i.log.gz">    
+      <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss.SSS} - %msg%n"/>    
+      <SizeBasedTriggeringPolicy size="5 MB" />    
+    </RollingFile>  
+    
+    <RollingFile name="WARNLog" fileName="C:/sinterLogs/warn.log"    
+                 filePattern="C:/sinterLogs/$${date:yyyy-MM}/warn-%d{MM-dd-yyyy}-%i.log.gz">    
+      <PatternLayout pattern="%d{yyyy.MM.dd HH:mm:ss.SSS} - %msg%n"/>    
+      <SizeBasedTriggeringPolicy size="5 MB" />    
+    </RollingFile>     
+    
+  </appenders>  
+
+  <loggers>  
+    <logger name="Control" level="trace" additivity="false">
+      <appender-ref ref="Service"/>        
+    </logger>
+   
+    <logger name="MYSQL" level="trace" additivity="false">
+      <appender-ref ref="DBLog"/>          
+    </logger>
+    <logger name="com.jl.hl.sinter.model.*" level="trace" additivity="false">
+      <appender-ref ref="DBLog"/>          
+    </logger>
+    <logger name="com.jl.hl.sinter.dao" level="trace" additivity="false">
+      <appender-ref ref="DBLog"/>          
+    </logger>
+    <logger name="org.apache.ibatis.*" level="trace" additivity="false">
+      <appender-ref ref="DBLog"/>          
+    </logger>
+    <logger name="java.sql.PreparedStatement" level="debug" additivity="false">
+      <appender-ref ref="DBLog"/>          
+    </logger>
+    <logger name="PLC" level="trace" additivity="false">
+      <appender-ref ref="PLCLog"/>  
+    </logger>    
+    <logger name="WARN" level="trace" additivity="false">
+      <appender-ref ref="WARNLog"/>  
+    </logger>
+     
+    <root level="trace">  
+      <appender-ref ref="Console"/> 
+    </root>  
+        
+  </loggers>  
+</configuration>  

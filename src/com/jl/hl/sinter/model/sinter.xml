@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jl.hl.sinter.model">
+
+	<select id="selectSinterOne" parameterType="string"
+		resultType="com.jl.hl.sinter.model.SinterVO">
+		select * from sinter where timeID = #{timeID}
+	</select>
+	
+	<select id="selectSinterList" parameterType="HashMap"
+		resultType="com.jl.hl.sinter.model.SinterVO">
+		select * from sinter where timeID between #{startTime} and #{endTime} and gasPressure >= 1
+	</select>
+	
+	<select id="selectResult" parameterType="HashMap"
+		resultType="map">
+		select avg(tempNorth) AS tempAvg, stddev(tempNorth) AS
+		tempStd, max(tempNorth) AS tempMax, min(tempNorth) AS tempMin,
+		avg(gaspressure) AS pressureAvg, stddev(gaspressure) AS pressureStd,
+		avg(gasFlow)
+		AS gasAvg, stddev(gasFlow) AS gasStd,avg(airFlow) AS
+		airAvg,
+		stddev(airFlow) AS airStd from sinter where timeID between #{startTime} and #{endTime} 
+	</select>
+
+	<insert id="addSinter" parameterType="com.jl.hl.sinter.model.SinterVO">
+		insert into
+		sinter(timeID,
+		gasPressure, airPressure, gasFlow, airFlow, gasFlowValveActual,
+		airFlowValveActual, gasFlowValveGiven, airFlowValveGiven, tempNorth,
+		tempSouth, chamberPressure, airGasRatioActual, airGasRatioGiven,
+		tempGiven, mode)
+		values(#{timeID}, #{gasPressure}, #{airPressure},
+		#{gasFlow}, #{airFlow}, #{gasFlowValveActual}, #{airFlowValveActual},
+		#{gasFlowValveGiven}, #{airFlowValveGiven}, #{tempNorth},
+		#{tempSouth}, #{chamberPressure}, #{airGasRatioActual},
+		#{airGasRatioGiven}, #{tempGiven}, #{mode})
+	</insert>
+
+</mapper>
